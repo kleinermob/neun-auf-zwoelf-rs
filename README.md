@@ -1,4 +1,4 @@
-# neun-auf-zwoelf-rs
+# d3d9on12-proxy-rs
 
 A drop-in `d3d9.dll` replacement written in Rust that transparently forces **D3D9on12** for any Direct3D 9 application.
 
