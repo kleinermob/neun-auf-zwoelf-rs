@@ -6,8 +6,6 @@ A drop-in `d3d9.dll` replacement written in Rust that transparently forces **D3D
 
 This DLL intercepts `Direct3DCreate9` and `Direct3DCreate9Ex` and redirects them to `Direct3DCreate9On12` / `Direct3DCreate9On12Ex` with `Enable9On12 = TRUE`. All other `d3d9.dll` exports are forwarded transparently to the real system DLL.
 
-**Practical result:** D3D9-only games (e.g. CS:GO Legacy) gain a proper DXGI swap chain, enabling DXGI-level hooks such as FPS overlays and vsync-off proxies to work on top of them.
-
 ## Requirements
 
 - Windows 10/11 (D3D9on12 is built-in)
@@ -28,11 +26,6 @@ Output:
 ```
 target/i686-pc-windows-msvc/release/d3d9.dll    ← 32-bit
 target/x86_64-pc-windows-msvc/release/d3d9.dll  ← 64-bit
-```
-
-Or use the included batch script:
-```bash
-build_all.bat
 ```
 
 ## Usage
