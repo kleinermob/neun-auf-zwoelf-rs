@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust targets
+        run: |
+          rustup target add x86_64-pc-windows-msvc
+          rustup target add i686-pc-windows-msvc
+
+      - name: Build 64-bit
+        run: cargo build --target x86_64-pc-windows-msvc --release
+
+      - name: Build 32-bit
+        run: cargo build --target i686-pc-windows-msvc --release
+
+      - name: Prepare release folders
+        shell: pwsh
+        run: |
+          mkdir x64
+          mkdir x32
+          Copy-Item target\x86_64-pc-windows-msvc\release\d3d9.dll x64\d3d9.dll
+          Copy-Item target\i686-pc-windows-msvc\release\d3d9.dll x32\d3d9.dll
+          Compress-Archive -Path x64, x32 -DestinationPath d3d9on12-proxy-rs.zip
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: d3d9on12-proxy-rs.zip
